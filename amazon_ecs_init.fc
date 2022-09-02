@@ -6,6 +6,8 @@
 
 /usr/libexec/amazon-ecs-init		--	gen_context(system_u:object_r:amazon_ecs_init_exec_t,s0)
 
+/usr/libexec/amazon-ecs-volume-plugin            --      gen_context(system_u:object_r:amazon_ecs_init_exec_t,s0)
+
 /var/cache/ecs/ecs-agent-v1.62.2.tar		--	gen_context(system_u:object_r:amazon_ecs_init_cache_t,s0)
 
 /var/cache/ecs/ecs-agent.tar		--	gen_context(system_u:object_r:amazon_ecs_init_cache_t,s0)
