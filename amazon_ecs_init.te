@@ -27,6 +27,8 @@ systemd_unit_file(amazon_ecs_init_unit_file_t)
 allow amazon_ecs_init_t self:capability { setgid setuid };
 allow amazon_ecs_init_t self:fifo_file rw_fifo_file_perms;
 allow amazon_ecs_init_t self:unix_stream_socket create_stream_socket_perms;
+allow amazon_ecs_init_t container_plugin_var_run_t:dir { add_name remove_name write };
+allow amazon_ecs_init_t container_plugin_var_run_t:sock_file { create setattr unlink };
 
 manage_dirs_pattern(amazon_ecs_init_t, amazon_ecs_init_cache_t, amazon_ecs_init_cache_t)
 manage_files_pattern(amazon_ecs_init_t, amazon_ecs_init_cache_t, amazon_ecs_init_cache_t)
@@ -51,7 +53,7 @@ sysnet_dns_name_resolve(amazon_ecs_init_t)
 require {
 	type unlabeled_t;
 	type amazon_ssm_agent_t;
-	type amazon_ecs_init_t;
+	type container_plugin_var_run_t;
 	class capability { net_raw sys_ptrace };
 	class dir { getattr search };
 	class file { open read };
