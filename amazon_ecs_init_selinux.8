@@ -1,45 +1,53 @@
-.TH  "amazon_ecs_volume_plugin_selinux"  "8"  "22-09-01" "amazon_ecs_volume_plugin" "SELinux Policy amazon_ecs_volume_plugin"
+.TH  "amazon_ecs_init_selinux"  "8"  "22-09-01" "amazon_ecs_init" "SELinux Policy amazon_ecs_init"
 .SH "NAME"
-amazon_ecs_volume_plugin_selinux \- Security Enhanced Linux Policy for the amazon_ecs_volume_plugin processes
+amazon_ecs_init_selinux \- Security Enhanced Linux Policy for the amazon_ecs_init processes
 .SH "DESCRIPTION"
 
-Security-Enhanced Linux secures the amazon_ecs_volume_plugin processes via flexible mandatory access control.
+Security-Enhanced Linux secures the amazon_ecs_init processes via flexible mandatory access control.
 
-The amazon_ecs_volume_plugin processes execute with the amazon_ecs_volume_plugin_t SELinux type. You can check if you have these processes running by executing the \fBps\fP command with the \fB\-Z\fP qualifier.
+The amazon_ecs_init processes execute with the amazon_ecs_init_t SELinux type. You can check if you have these processes running by executing the \fBps\fP command with the \fB\-Z\fP qualifier.
 
 For example:
 
-.B ps -eZ | grep amazon_ecs_volume_plugin_t
+.B ps -eZ | grep amazon_ecs_init_t
 
 
 .SH "ENTRYPOINTS"
 
-The amazon_ecs_volume_plugin_t SELinux type can be entered via the \fBamazon_ecs_volume_plugin_exec_t\fP file type.
+The amazon_ecs_init_t SELinux type can be entered via the \fBamazon_ecs_init_exec_t\fP file type.
 
-The default entrypoint paths for the amazon_ecs_volume_plugin_t domain are the following:
+The default entrypoint paths for the amazon_ecs_init_t domain are the following:
 
-/usr/libexec/amazon-ecs-volume-plugin
+/usr/libexec/amazon-ecs-init
 .SH PROCESS TYPES
 SELinux defines process types (domains) for each process running on the system
 .PP
 You can see the context of a process using the \fB\-Z\fP option to \fBps\bP
 .PP
 Policy governs the access confined processes have to files.
-SELinux amazon_ecs_volume_plugin policy is very flexible allowing users to setup their amazon_ecs_volume_plugin processes in as secure a method as possible.
+SELinux amazon_ecs_init policy is very flexible allowing users to setup their amazon_ecs_init processes in as secure a method as possible.
 .PP
-The following process types are defined for amazon_ecs_volume_plugin:
+The following process types are defined for amazon_ecs_init:
 
 .EX
-.B amazon_ecs_volume_plugin_t
+.B amazon_ecs_init_t
 .EE
 .PP
 Note:
-.B semanage permissive -a amazon_ecs_volume_plugin_t
-can be used to make the process type amazon_ecs_volume_plugin_t permissive. SELinux does not deny access to permissive process types, but the AVC (SELinux denials) messages are still generated.
+.B semanage permissive -a amazon_ecs_init_t
+can be used to make the process type amazon_ecs_init_t permissive. SELinux does not deny access to permissive process types, but the AVC (SELinux denials) messages are still generated.
 
 .SH BOOLEANS
-SELinux policy is customizable based on least access required.  amazon_ecs_volume_plugin policy is extremely flexible and has several booleans that allow you to manipulate the policy and run amazon_ecs_volume_plugin with the tightest access possible.
+SELinux policy is customizable based on least access required.  amazon_ecs_init policy is extremely flexible and has several booleans that allow you to manipulate the policy and run amazon_ecs_init with the tightest access possible.
 
+
+.PP
+If you want to allow users to resolve user passwd entries directly from ldap rather then using a sssd server, you must turn on the authlogin_nsswitch_use_ldap boolean. Disabled by default.
+
+.EX
+.B setsebool -P authlogin_nsswitch_use_ldap 1
+
+.EE
 
 .PP
 If you want to allow all daemons to write corefiles to /, you must turn on the daemons_dump_core boolean. Disabled by default.
@@ -129,12 +137,36 @@ If you want to enable reading of urandom for all domains, you must turn on the g
 
 .EE
 
+.PP
+If you want to allow confined applications to run with kerberos, you must turn on the kerberos_enabled boolean. Enabled by default.
+
+.EX
+.B setsebool -P kerberos_enabled 1
+
+.EE
+
+.PP
+If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Disabled by default.
+
+.EX
+.B setsebool -P nis_enabled 1
+
+.EE
+
+.PP
+If you want to allow confined applications to use nscd shared memory, you must turn on the nscd_use_shm boolean. Enabled by default.
+
+.EX
+.B setsebool -P nscd_use_shm 1
+
+.EE
+
 .SH "MANAGED FILES"
 
-The SELinux process type amazon_ecs_volume_plugin_t can manage files labeled with the following file types.  The paths listed are the default paths for these file types.  Note the processes UID still need to have DAC permissions.
+The SELinux process type amazon_ecs_init_t can manage files labeled with the following file types.  The paths listed are the default paths for these file types.  Note the processes UID still need to have DAC permissions.
 
 .br
-.B amazon_ecs_volume_plugin_cache_t
+.B amazon_ecs_init_cache_t
 
 	/var/cache/ecs/ecs-agent.tar
 .br
@@ -144,7 +176,7 @@ The SELinux process type amazon_ecs_volume_plugin_t can manage files labeled wit
 .br
 
 .br
-.B amazon_ecs_volume_plugin_var_lib_t
+.B amazon_ecs_init_var_lib_t
 
 	/var/lib/ecs/data(/.*)?
 .br
@@ -261,30 +293,30 @@ SELinux requires files to have an extended attribute to define the file type.
 You can see the context of a file using the \fB\-Z\fP option to \fBls\bP
 .PP
 Policy governs the access confined processes have to these files.
-SELinux amazon_ecs_volume_plugin policy is very flexible allowing users to setup their amazon_ecs_volume_plugin processes in as secure a method as possible.
+SELinux amazon_ecs_init policy is very flexible allowing users to setup their amazon_ecs_init processes in as secure a method as possible.
 .PP
 
 .PP
 .B STANDARD FILE CONTEXT
 
-SELinux defines the file context types for the amazon_ecs_volume_plugin, if you wanted to
+SELinux defines the file context types for the amazon_ecs_init, if you wanted to
 store files with these types in a diffent paths, you need to execute the semanage command to sepecify alternate labeling and then use restorecon to put the labels on disk.
 
-.B semanage fcontext -a -t amazon_ecs_volume_plugin_var_lib_t '/srv/myamazon_ecs_volume_plugin_content(/.*)?'
+.B semanage fcontext -a -t amazon_ecs_init_var_lib_t '/srv/myamazon_ecs_init_content(/.*)?'
 .br
-.B restorecon -R -v /srv/myamazon_ecs_volume_plugin_content
+.B restorecon -R -v /srv/myamazon_ecs_init_content
 
 Note: SELinux often uses regular expressions to specify labels that match multiple files.
 
-.I The following file types are defined for amazon_ecs_volume_plugin:
+.I The following file types are defined for amazon_ecs_init:
 
 
 .EX
 .PP
-.B amazon_ecs_volume_plugin_cache_t
+.B amazon_ecs_init_cache_t
 .EE
 
-- Set files with the amazon_ecs_volume_plugin_cache_t type, if you want to store the files under the /var/cache directory.
+- Set files with the amazon_ecs_init_cache_t type, if you want to store the files under the /var/cache directory.
 
 .br
 .TP 5
@@ -293,18 +325,18 @@ Paths:
 
 .EX
 .PP
-.B amazon_ecs_volume_plugin_exec_t
+.B amazon_ecs_init_exec_t
 .EE
 
-- Set files with the amazon_ecs_volume_plugin_exec_t type, if you want to transition an executable to the amazon_ecs_volume_plugin_t domain.
+- Set files with the amazon_ecs_init_exec_t type, if you want to transition an executable to the amazon_ecs_init_t domain.
 
 
 .EX
 .PP
-.B amazon_ecs_volume_plugin_unit_file_t
+.B amazon_ecs_init_unit_file_t
 .EE
 
-- Set files with the amazon_ecs_volume_plugin_unit_file_t type, if you want to treat the files as amazon ecs volume plugin unit content.
+- Set files with the amazon_ecs_init_unit_file_t type, if you want to treat the files as amazon ecs init unit content.
 
 .br
 .TP 5
@@ -313,10 +345,10 @@ Paths:
 
 .EX
 .PP
-.B amazon_ecs_volume_plugin_var_lib_t
+.B amazon_ecs_init_var_lib_t
 .EE
 
-- Set files with the amazon_ecs_volume_plugin_var_lib_t type, if you want to store the amazon ecs volume plugin files under the /var/lib directory.
+- Set files with the amazon_ecs_init_var_lib_t type, if you want to store the amazon ecs init files under the /var/lib directory.
 
 
 .PP
@@ -348,5 +380,5 @@ This manual page was auto-generated using
 .B "sepolicy manpage".
 
 .SH "SEE ALSO"
-selinux(8), amazon_ecs_volume_plugin(8), semanage(8), restorecon(8), chcon(1), sepolicy(8)
+selinux(8), amazon_ecs_init(8), semanage(8), restorecon(8), chcon(1), sepolicy(8)
 , setsebool(8)
