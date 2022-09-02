@@ -1,0 +1,75 @@
+policy_module(amazon_ecs_init, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+type amazon_ecs_init_t;
+type amazon_ecs_init_exec_t;
+init_daemon_domain(amazon_ecs_init_t, amazon_ecs_init_exec_t)
+
+permissive amazon_ecs_init_t;
+
+type amazon_ecs_init_cache_t;
+files_type(amazon_ecs_init_cache_t)
+
+type amazon_ecs_init_var_lib_t;
+files_type(amazon_ecs_init_var_lib_t)
+
+type amazon_ecs_init_unit_file_t;
+systemd_unit_file(amazon_ecs_init_unit_file_t)
+
+########################################
+#
+# amazon_ecs_init local policy
+#
+allow amazon_ecs_init_t self:capability { setgid setuid };
+allow amazon_ecs_init_t self:fifo_file rw_fifo_file_perms;
+allow amazon_ecs_init_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(amazon_ecs_init_t, amazon_ecs_init_cache_t, amazon_ecs_init_cache_t)
+manage_files_pattern(amazon_ecs_init_t, amazon_ecs_init_cache_t, amazon_ecs_init_cache_t)
+manage_lnk_files_pattern(amazon_ecs_init_t, amazon_ecs_init_cache_t, amazon_ecs_init_cache_t)
+files_var_filetrans(amazon_ecs_init_t, amazon_ecs_init_cache_t, { dir file lnk_file })
+
+manage_dirs_pattern(amazon_ecs_init_t, amazon_ecs_init_var_lib_t, amazon_ecs_init_var_lib_t)
+manage_files_pattern(amazon_ecs_init_t, amazon_ecs_init_var_lib_t, amazon_ecs_init_var_lib_t)
+manage_lnk_files_pattern(amazon_ecs_init_t, amazon_ecs_init_var_lib_t, amazon_ecs_init_var_lib_t)
+files_var_lib_filetrans(amazon_ecs_init_t, amazon_ecs_init_var_lib_t, { dir file lnk_file })
+
+domain_use_interactive_fds(amazon_ecs_init_t)
+
+files_read_etc_files(amazon_ecs_init_t)
+
+auth_use_nsswitch(amazon_ecs_init_t)
+
+miscfiles_read_localization(amazon_ecs_init_t)
+
+sysnet_dns_name_resolve(amazon_ecs_init_t)
+
+require {
+	type unlabeled_t;
+	type amazon_ssm_agent_t;
+	type amazon_ecs_init_t;
+	class capability { net_raw sys_ptrace };
+	class dir { getattr search };
+	class file { open read };
+	class rawip_socket { create getopt setopt };
+}
+
+#============= amazon_ecs_init_t ==============
+allow amazon_ecs_init_t self:capability net_raw;
+allow amazon_ecs_init_t self:rawip_socket { create getopt setopt };
+container_stream_connect(amazon_ecs_init_t)
+corecmd_exec_ls(amazon_ecs_init_t)
+corenet_tcp_connect_http_port(amazon_ecs_init_t)
+dev_read_sysfs(amazon_ecs_init_t)
+docker_read_pid_files(amazon_ecs_init_t)
+kernel_getattr_proc(amazon_ecs_init_t)
+kernel_read_network_state(amazon_ecs_init_t)
+kernel_request_load_module(amazon_ecs_init_t)
+kernel_rw_net_sysctls(amazon_ecs_init_t)
+kernel_search_network_sysctl(amazon_ecs_init_t)
+logging_manage_generic_logs(amazon_ecs_init_t)
+vmware_filetrans_content(amazon_ecs_init_t)
