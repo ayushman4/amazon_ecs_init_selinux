@@ -62,7 +62,7 @@ require {
 allow amazon_ecs_init_t self:capability net_raw;
 allow amazon_ecs_init_t self:rawip_socket { create getopt setopt };
 container_stream_connect(amazon_ecs_init_t)
-corecmd_exec_ls(amazon_ecs_init_t)
+corecmd_exec_bin(amazon_ecs_init_t)
 corenet_tcp_connect_http_port(amazon_ecs_init_t)
 dev_read_sysfs(amazon_ecs_init_t)
 docker_read_pid_files(amazon_ecs_init_t)
