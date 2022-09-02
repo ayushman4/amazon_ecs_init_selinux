@@ -1,0 +1,15 @@
+/usr/lib/systemd/system/amazon-ecs-volume-plugin.service		--	gen_context(system_u:object_r:amazon_ecs_init_unit_file_t,s0)
+
+/usr/lib/systemd/system/amazon-ecs-volume-plugin.socket		--	gen_context(system_u:object_r:amazon_ecs_init_unit_file_t,s0)
+
+/usr/lib/systemd/system/ecs.service		--	gen_context(system_u:object_r:amazon_ecs_init_unit_file_t,s0)
+
+/usr/libexec/amazon-ecs-init		--	gen_context(system_u:object_r:amazon_ecs_init_exec_t,s0)
+
+/var/cache/ecs/ecs-agent-v1.62.2.tar		--	gen_context(system_u:object_r:amazon_ecs_init_cache_t,s0)
+
+/var/cache/ecs/ecs-agent.tar		--	gen_context(system_u:object_r:amazon_ecs_init_cache_t,s0)
+
+/var/cache/ecs/state		--	gen_context(system_u:object_r:amazon_ecs_init_cache_t,s0)
+
+/var/lib/ecs/data(/.*)?		gen_context(system_u:object_r:amazon_ecs_init_var_lib_t,s0)
