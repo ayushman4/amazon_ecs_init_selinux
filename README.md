@@ -1,5 +1,5 @@
 # amazon_ecs_init_selinux
-A default Selinux policy for amazon_ecs_init service.
+A default Selinux policy for amazon_ecs_init service which is the ecs-agent
 
 This also allows us to understand what access these processes need and what abilities they have.
 
