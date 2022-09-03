@@ -52,7 +52,7 @@ sysnet_dns_name_resolve(amazon_ecs_init_t)
 
 require {
 	type unlabeled_t;
-	type amazon_ssm_agent_t;
+#	type amazon_ssm_agent_t;
 	type container_plugin_var_run_t;
 	class capability { net_raw sys_ptrace };
 	class dir { getattr search };
