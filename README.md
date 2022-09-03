@@ -5,6 +5,7 @@ This also allows us to understand what access these processes need and what abil
 
 ```
 https://github.com/aws/amazon-ecs-init
+https://github.com/aws/amazon-ecs-agent
 ```
 ECS processes in host
 
