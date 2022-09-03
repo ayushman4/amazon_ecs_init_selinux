@@ -60,6 +60,8 @@ sepolicy manpage -p . -d amazon_ecs_init_t
 /sbin/restorecon -F -R -v /var/cache/ecs/ecs-agent.tar
 # Fixing the file context on /var/lib/ecs/data
 /sbin/restorecon -F -R -v /var/lib/ecs/data
+# Fixing the file context on /usr/libexec/amazon-ecs-volume-plugin
+/sbin/restorecon -F -R -v /usr/libexec/amazon-ecs-volume-plugin
 # Generate a rpm package for the newly generated policy
 
 pwd=$(pwd)
